@@ -1,9 +1,10 @@
-#November 23, 2019
+#Last update: October 13, 2020
 #Purpose: subset fastq reads to the same sampling depth
 
 import argparse
 import random
 
+#set seed for random number generator 
 random.seed(99)
 
 parser = argparse.ArgumentParser(description = "Subset fastq reads to the same sampling depth.")
@@ -46,16 +47,14 @@ def subsample_files(input_files, subsample_num):
         #randomly select and sort records
         rand_records = sorted(random.sample(list(range(0,records)), k=subsample_num))
        
-        #print(rand_records)
-
+        #open original files for reading
         R1, R2 = open(files[0]), open(files[1])
+        #open subsampled files for writing
         sub_R1, sub_R2 = open(files[0] + ".subsample", "w+"), open(files[1] + ".subsample", "w+")
 
         rec_no = 0
 
         for rr in rand_records:
-            #print(rec_no)
-
             while rec_no < rr:
                 rec_no += 1
                 for i in range(4): R1.readline()
@@ -68,8 +67,6 @@ def subsample_files(input_files, subsample_num):
         print(("Wrote to {}, {}").format(sub_R1.name, sub_R2.name))
 
     return
-
-
 
 ##########################################
 #main
